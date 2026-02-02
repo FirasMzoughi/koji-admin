@@ -1,0 +1,62 @@
+
+import { redirect } from 'next/navigation'
+import { createClient } from '@/lib/supabase' // Use server-side friendly client if available, but for now client-side check or middleware is common. 
+// Actually for layout server component we need server client.
+import { createServerClient, type CookieOptions } from '@supabase/ssr'
+import { cookies } from 'next/headers'
+import Sidebar from '@/components/layout/Sidebar'
+
+// Helper to create server client for RSC
+async function createClientForServer() {
+  const cookieStore = await cookies()
+
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll()
+        },
+        setAll(cookiesToSet) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              cookieStore.set(name, value, options)
+            )
+          } catch {
+            // The `setAll` method was called from a Server Component.
+            // This can be ignored if you have middleware refreshing
+            // user sessions.
+          }
+        },
+      },
+    }
+  )
+}
+
+export default async function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  const supabase = await createClientForServer()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    redirect('/auth/login')
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Sidebar />
+      <main className="pl-64 min-h-screen">
+        <div className="max-w-7xl mx-auto p-8">
+          {children}
+        </div>
+      </main>
+    </div>
+  )
+}
