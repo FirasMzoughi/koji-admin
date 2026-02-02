@@ -25,8 +25,8 @@ export default async function UsersPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 font-outfit">Users</h1>
-          <p className="text-gray-500 mt-2">Manage all registered professionals and clients.</p>
+          <h1 className="text-3xl font-bold text-gray-900 font-outfit">Utilisateurs</h1>
+          <p className="text-gray-500 mt-2">Gérez tous les professionnels et clients enregistrés.</p>
         </div>
         <div className="bg-white px-4 py-2 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 shadow-sm">
           Total: {users?.length || 0}
@@ -38,11 +38,11 @@ export default async function UsersPage() {
           <table className="w-full text-left text-sm whitespace-nowrap">
             <thead className="bg-gray-50/50 border-b border-gray-100">
               <tr>
-                <th className="px-6 py-4 font-semibold text-gray-900">User Details</th>
+                <th className="px-6 py-4 font-semibold text-gray-900">Détails Utilisateur</th>
                 <th className="px-6 py-4 font-semibold text-gray-900">Profession</th>
-                <th className="px-6 py-4 font-semibold text-gray-900">Status</th>
-                <th className="px-6 py-4 font-semibold text-gray-900">Business Info</th>
-                <th className="px-6 py-4 font-semibold text-gray-900">Joined Date</th>
+                <th className="px-6 py-4 font-semibold text-gray-900">Statut</th>
+                <th className="px-6 py-4 font-semibold text-gray-900">Infos Entreprise</th>
+                <th className="px-6 py-4 font-semibold text-gray-900">Date d'inscription</th>
                 {/* <th className="px-6 py-4 font-semibold text-gray-900 text-right">Actions</th> */}
               </tr>
             </thead>
@@ -87,7 +87,7 @@ export default async function UsersPage() {
                         </span>
                       </div>
                     ) : (
-                      <span className="text-gray-400 italic">None</span>
+                      <span className="text-gray-400 italic">Aucune</span>
                     )}
                   </td>
                   <td className="px-6 py-4 text-gray-500">
@@ -105,7 +105,7 @@ export default async function UsersPage() {
               {(!users || users.length === 0) && (
                 <tr>
                   <td colSpan={5} className="px-6 py-12 text-center text-gray-500">
-                    No users found.
+                    Aucun utilisateur trouvé.
                   </td>
                 </tr>
               )}

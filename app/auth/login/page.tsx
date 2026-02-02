@@ -45,8 +45,8 @@ export default function LoginPage() {
           <div className="h-12 w-12 bg-blue-600 rounded-xl mx-auto flex items-center justify-center mb-4 shadow-lg shadow-blue-600/20">
             <span className="text-white font-bold text-xl">K</span>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900">Admin Login</h1>
-          <p className="text-sm text-gray-500">Enter your credentials to access the dashboard</p>
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900">Connexion Admin</h1>
+          <p className="text-sm text-gray-500">Entrez vos identifiants pour accéder au tableau de bord</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-6">
@@ -59,7 +59,7 @@ export default function LoginPage() {
           <div className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                Email address
+                Adresse email
               </label>
               <input
                 id="email"
@@ -76,7 +76,7 @@ export default function LoginPage() {
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                Password
+                Mot de passe
               </label>
               <input
                 id="password"
@@ -100,14 +100,14 @@ export default function LoginPage() {
             {loading ? (
               <Loader2 className="w-5 h-5 animate-spin" />
             ) : (
-              'Sign in'
+              'Se connecter'
             )}
           </button>
 
           <div className="text-center text-sm text-gray-500">
-            Don't have an account?{' '}
+            Pas encore de compte ?{' '}
             <a href="/auth/signup" className="text-blue-600 hover:text-blue-700 font-medium">
-              Sign up
+              S'inscrire
             </a>
           </div>
         </form>

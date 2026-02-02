@@ -64,8 +64,8 @@ export default function SignupPage() {
           <div className="h-12 w-12 bg-blue-600 rounded-xl mx-auto flex items-center justify-center mb-4 shadow-lg shadow-blue-600/20">
             <span className="text-white font-bold text-xl">K</span>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900">Create Admin Account</h1>
-          <p className="text-sm text-gray-500">Sign up to access the Koji Admin Dashboard</p>
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900">Créer un compte Admin</h1>
+          <p className="text-sm text-gray-500">Inscrivez-vous pour accéder au tableau de bord Koji</p>
         </div>
 
         <form onSubmit={handleSignup} className="space-y-6">
@@ -78,7 +78,7 @@ export default function SignupPage() {
           <div className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                Email address
+                Adresse email
               </label>
               <input
                 id="email"
@@ -89,13 +89,13 @@ export default function SignupPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none text-gray-900"
-                placeholder="your-email@example.com"
+                placeholder="votre-email@exemple.com"
               />
             </div>
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                Password
+                Mot de passe
               </label>
               <input
                 id="password"
@@ -108,7 +108,7 @@ export default function SignupPage() {
                 className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none text-gray-900"
                 placeholder="••••••••"
               />
-              <p className="text-xs text-gray-500 mt-1">Must be at least 6 characters</p>
+              <p className="text-xs text-gray-500 mt-1">Doit contenir au moins 6 caractères</p>
             </div>
           </div>
 
@@ -120,14 +120,14 @@ export default function SignupPage() {
             {loading ? (
               <Loader2 className="w-5 h-5 animate-spin" />
             ) : (
-              'Create Account'
+              'Créer un compte'
             )}
           </button>
 
           <div className="text-center text-sm text-gray-500">
-            Already have an account?{' '}
+            Vous avez déjà un compte ?{' '}
             <Link href="/auth/login" className="text-blue-600 hover:text-blue-700 font-medium">
-              Sign in
+              Se connecter
             </Link>
           </div>
         </form>

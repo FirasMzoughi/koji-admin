@@ -48,37 +48,37 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 font-outfit">Dashboard Overview</h1>
-        <p className="text-gray-500 mt-2">Welcome back, Admin. Here's what's happening today.</p>
+        <h1 className="text-3xl font-bold text-gray-900 font-outfit">Tableau de Bord</h1>
+        <p className="text-gray-500 mt-2">Bon retour, Admin. Voici ce qui se passe aujourd'hui.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard
-          label="Total Users"
+          label="Total Utilisateurs"
           value={stats.usersCount}
           icon={Users}
-          trend="+12% from last month"
+          trend="+12% mois dernier"
           color="blue"
         />
         <StatCard
-          label="Total Quotes"
+          label="Total Devis"
           value={stats.quotesCount}
           icon={FileText}
-          trend="+5 new this week"
+          trend="+5 nouveaux cette semaine"
           color="purple"
         />
         <StatCard
-          label="Active Value"
+          label="Valeur Active"
           value={`€${stats.potentialValue.toLocaleString('fr-FR')}`}
           icon={DollarSign}
-          trend="In pending quotes"
+          trend="Dans les devis en cours"
           color="green"
         />
         <StatCard
-          label="Products"
+          label="Produits"
           value={stats.productsCount}
           icon={Package}
-          trend=" catalog items"
+          trend="articles au catalogue"
           color="orange"
         />
       </div>
@@ -86,26 +86,26 @@ export default async function DashboardPage() {
       {/* Recent Activity or Quick Actions could go here */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)]">
-          <h3 className="font-bold text-lg text-gray-900 mb-4">Quick Actions</h3>
+          <h3 className="font-bold text-lg text-gray-900 mb-4">Actions Rapides</h3>
           <div className="space-y-3">
             <button className="w-full text-left px-4 py-3 rounded-xl bg-gray-50 hover:bg-blue-50 hover:text-blue-700 transition-colors font-medium text-gray-700 flex items-center justify-between group">
-              <span>Add New Product</span>
+              <span>Ajouter un Nouveau Produit</span>
               <span className="text-gray-400 group-hover:text-blue-500">→</span>
             </button>
             <button className="w-full text-left px-4 py-3 rounded-xl bg-gray-50 hover:bg-blue-50 hover:text-blue-700 transition-colors font-medium text-gray-700 flex items-center justify-between group">
-              <span>Review Pending Quotes</span>
+              <span>Revoir les Devis En Attente</span>
               <span className="text-gray-400 group-hover:text-blue-500">→</span>
             </button>
             <button className="w-full text-left px-4 py-3 rounded-xl bg-gray-50 hover:bg-blue-50 hover:text-blue-700 transition-colors font-medium text-gray-700 flex items-center justify-between group">
-              <span>Manage Users</span>
+              <span>Gérer les Utilisateurs</span>
               <span className="text-gray-400 group-hover:text-blue-500">→</span>
             </button>
           </div>
         </div>
 
         <div className="bg-gradient-to-br from-blue-600 to-indigo-700 p-6 rounded-2xl shadow-lg text-white">
-          <h3 className="font-bold text-lg mb-2">Pro Tip</h3>
-          <p className="text-blue-100 mb-4">You can now manage the entire product catalog directly from the Products tab. Changes reflect immediately in the mobile app.</p>
+          <h3 className="font-bold text-lg mb-2">Conseil Pro</h3>
+          <p className="text-blue-100 mb-4">Vous pouvez maintenant gérer l'intégralité du catalogue produits directement depuis l'onglet Produits. Les changements sont reflétés immédiatement dans l'application mobile.</p>
           <div className="h-32 bg-white/10 rounded-xl flex items-center justify-center">
             <TrendingUp className="w-12 h-12 text-white/50" />
           </div>

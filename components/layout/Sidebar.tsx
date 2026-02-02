@@ -15,10 +15,10 @@ import {
 import { cn } from '@/lib/utils'
 
 const navItems = [
-  { label: 'Overview', href: '/dashboard', icon: LayoutDashboard },
-  { label: 'Users', href: '/dashboard/users', icon: Users },
-  { label: 'Quotes', href: '/dashboard/quotes', icon: FileText },
-  { label: 'Products', href: '/dashboard/products', icon: Package },
+  { label: 'Vue d\'ensemble', href: '/dashboard', icon: LayoutDashboard },
+  { label: 'Utilisateurs', href: '/dashboard/users', icon: Users },
+  { label: 'Devis', href: '/dashboard/quotes', icon: FileText },
+  { label: 'Produits', href: '/dashboard/products', icon: Package },
 ]
 
 export default function Sidebar({
@@ -86,14 +86,14 @@ export default function Sidebar({
       <div className="p-4 border-t border-gray-100 space-y-1">
         <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-all">
           <Settings className="w-5 h-5 text-gray-400" />
-          Settings
+          Paramètres
         </button>
         <button
           onClick={handleSignOut}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-red-600 hover:bg-red-50 transition-all"
         >
           <LogOut className="w-5 h-5" />
-          Sign Out
+          Se déconnecter
         </button>
       </div>
     </div>

@@ -69,7 +69,7 @@ export default function ProductsClientPage({ initialProducts }: { initialProduct
 
       setFormData({ ...formData, image_url: data.publicUrl })
     } catch (error) {
-      alert('Error uploading image!')
+      alert('Erreur lors du téléchargement de l\'image !')
       console.error(error)
     } finally {
       setUploadingImage(false)
@@ -112,14 +112,14 @@ export default function ProductsClientPage({ initialProducts }: { initialProduct
       })
       router.refresh()
     } catch (err) {
-      alert('Error adding product: ' + (err as any).message)
+      alert('Erreur lors de l\'ajout du produit : ' + (err as any).message)
     } finally {
       setLoading(false)
     }
   }
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this product?')) return
+    if (!confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) return
 
     try {
       const { error } = await supabase.from('products').delete().eq('id', id)
@@ -127,7 +127,7 @@ export default function ProductsClientPage({ initialProducts }: { initialProduct
       setProducts(products.filter(p => p.id !== id))
       router.refresh()
     } catch (err) {
-      alert('Error deleting product')
+      alert('Erreur lors de la suppression du produit')
     }
   }
 
@@ -135,15 +135,15 @@ export default function ProductsClientPage({ initialProducts }: { initialProduct
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 font-outfit">Products</h1>
-          <p className="text-gray-500 mt-2">Manage catalog items, pricing, and details.</p>
+          <h1 className="text-3xl font-bold text-gray-900 font-outfit">Produits</h1>
+          <p className="text-gray-500 mt-2">Gérez les articles du catalogue, les prix et les détails.</p>
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl font-medium flex items-center gap-2 shadow-lg shadow-blue-600/20 transition-all"
         >
           <Plus className="w-5 h-5" />
-          Add Product
+          Ajouter un Produit
         </button>
       </div>
 
@@ -152,7 +152,7 @@ export default function ProductsClientPage({ initialProducts }: { initialProduct
         <Search className="w-5 h-5 text-gray-400" />
         <input
           type="text"
-          placeholder="Search products by name, brand, or category..."
+          placeholder="Rechercher des produits par nom, marque ou catégorie..."
           className="flex-1 outline-none text-gray-900 placeholder-gray-400"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -191,7 +191,7 @@ export default function ProductsClientPage({ initialProducts }: { initialProduct
 
       {filteredProducts.length === 0 && (
         <div className="text-center py-12 text-gray-500">
-          No products found matching your search.
+          Aucun produit ne correspond à votre recherche.
         </div>
       )}
 
@@ -200,7 +200,7 @@ export default function ProductsClientPage({ initialProducts }: { initialProduct
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
           <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
             <div className="p-6 border-b border-gray-100 flex justify-between items-center sticky top-0 bg-white/95 backdrop-blur z-10">
-              <h2 className="text-xl font-bold font-outfit text-gray-900">Add New Product</h2>
+              <h2 className="text-xl font-bold font-outfit text-gray-900">Ajouter un Nouveau Produit</h2>
               <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-gray-600">
                 <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center">✕</div>
               </button>
@@ -210,11 +210,11 @@ export default function ProductsClientPage({ initialProducts }: { initialProduct
               <div className="grid grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
-                    <input required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400" placeholder="e.g. White Paint" />
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Nom du Produit</label>
+                    <input required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400" placeholder="ex. Peinture Blanche" />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Catégorie</label>
                     <select value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-gray-900">
                       <option value="Materiaux">Materiaux</option>
                       <option value="Peinture">Peinture</option>
@@ -226,34 +226,34 @@ export default function ProductsClientPage({ initialProducts }: { initialProduct
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Brand</label>
-                    <input value={formData.brand} onChange={e => setFormData({ ...formData, brand: e.target.value })} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400" placeholder="e.g. Tollens" />
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Marque</label>
+                    <input value={formData.brand} onChange={e => setFormData({ ...formData, brand: e.target.value })} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400" placeholder="ex. Tollens" />
                   </div>
                 </div>
 
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Price (HT)</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Prix (HT)</label>
                       <input type="number" step="0.01" required value={formData.price_ht} onChange={e => setFormData({ ...formData, price_ht: e.target.value })} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400" placeholder="0.00" />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Unit</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Unité</label>
                       <select value={formData.unit} onChange={e => setFormData({ ...formData, unit: e.target.value })} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-gray-900">
-                        <option value="u">Unit (u)</option>
+                        <option value="u">Unité (u)</option>
                         <option value="m2">m²</option>
-                        <option value="ml">Linear Meter (ml)</option>
-                        <option value="L">Liter (L)</option>
-                        <option value="kg">Kilogram (kg)</option>
+                        <option value="ml">Mètre Linéaire (ml)</option>
+                        <option value="L">Litre (L)</option>
+                        <option value="kg">Kilogramme (kg)</option>
                       </select>
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Packaging Info</label>
-                    <input value={formData.packaging} onChange={e => setFormData({ ...formData, packaging: e.target.value })} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400" placeholder="e.g. Pot 15L" />
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Conditionnement</label>
+                    <input value={formData.packaging} onChange={e => setFormData({ ...formData, packaging: e.target.value })} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400" placeholder="ex. Pot 15L" />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Product Image</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Image du Produit</label>
                     <div className="flex gap-2 items-center">
                       <label className="flex-1 cursor-pointer">
                         <input
@@ -267,12 +267,12 @@ export default function ProductsClientPage({ initialProducts }: { initialProduct
                           {uploadingImage ? (
                             <>
                               <Loader2 className="w-4 h-4 animate-spin" />
-                              <span>Uploading...</span>
+                              <span>Chargement...</span>
                             </>
                           ) : (
                             <>
                               <ImageIcon className="w-4 h-4" />
-                              <span>Click to upload</span>
+                              <span>Cliquer pour charger</span>
                             </>
                           )}
                         </div>
@@ -280,7 +280,7 @@ export default function ProductsClientPage({ initialProducts }: { initialProduct
 
                       <div className="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center border border-gray-200 shrink-0 overflow-hidden relative">
                         {formData.image_url ? (
-                          <img src={formData.image_url} alt="Preview" className="w-full h-full object-cover" />
+                          <img src={formData.image_url} alt="Aperçu" className="w-full h-full object-cover" />
                         ) : (
                           <ImageIcon className="w-5 h-5 text-gray-400" />
                         )}
@@ -291,14 +291,14 @@ export default function ProductsClientPage({ initialProducts }: { initialProduct
               </div>
 
               <div className="pt-4 flex justify-end gap-3 sticky bottom-0 bg-white z-10">
-                <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 text-gray-600 font-medium hover:bg-gray-50 rounded-xl transition-colors">Cancel</button>
+                <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 text-gray-600 font-medium hover:bg-gray-50 rounded-xl transition-colors">Annuler</button>
                 <button
                   type="submit"
                   disabled={loading || uploadingImage}
                   className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium shadow-lg shadow-blue-600/20 disabled:opacity-70 transition-all flex items-center gap-2"
                 >
                   {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-                  Save Product
+                  Enregistrer
                 </button>
               </div>
             </form>
