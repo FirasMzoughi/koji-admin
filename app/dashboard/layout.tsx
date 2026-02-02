@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase' // Use server-side friendly client
 // Actually for layout server component we need server client.
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { cookies } from 'next/headers'
-import Sidebar from '@/components/layout/Sidebar'
+import DashboardShell from '@/components/layout/DashboardShell'
 
 // Helper to create server client for RSC
 async function createClientForServer() {
@@ -50,13 +50,8 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Sidebar />
-      <main className="pl-64 min-h-screen">
-        <div className="max-w-7xl mx-auto p-8">
-          {children}
-        </div>
-      </main>
-    </div>
+    <DashboardShell>
+      {children}
+    </DashboardShell>
   )
 }
