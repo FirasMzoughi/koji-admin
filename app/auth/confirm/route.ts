@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   const error = searchParams.get('error')
   const errorDescription = searchParams.get('error_description')
 
-  // If Supabase returned an error in the URL, redirect to the page with it
+  // If Supabase returned an error in the URL, forward it to the UI page
   if (error) {
     const url = new URL(`${origin}/auth/callback`)
     url.searchParams.set('error', errorDescription ?? error)
@@ -38,16 +38,16 @@ export async function GET(request: NextRequest) {
     const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
 
     if (!exchangeError) {
-      // Code exchanged successfully — show the success page (no ?code in URL)
+      // Code exchanged — redirect to the success UI page
       return NextResponse.redirect(`${origin}/auth/callback`)
     }
 
-    // Exchange failed
+    // Exchange failed — forward error to UI page
     const url = new URL(`${origin}/auth/callback`)
     url.searchParams.set('error', exchangeError.message)
     return NextResponse.redirect(url)
   }
 
-  // No code and no error — just show the page as-is
+  // No code — just redirect to the UI page
   return NextResponse.redirect(`${origin}/auth/callback`)
 }
