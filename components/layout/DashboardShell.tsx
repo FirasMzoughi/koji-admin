@@ -16,10 +16,10 @@ export default function DashboardShell({
       {/* Mobile Header */}
       <div className="md:hidden flex items-center justify-between p-4 bg-white border-b border-gray-100 sticky top-0 z-40">
         <div className="flex items-center gap-2">
-          <div className="h-8 w-8 bg-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-600/20">
-            <span className="text-white font-bold">K</span>
+          <div className="h-8 w-8 bg-[#0E172C] rounded-lg border border-gray-800 flex items-center justify-center overflow-hidden shrink-0">
+            <img src="/logo.png" alt="Koji Logo" className="w-full h-full object-contain p-0.5" />
           </div>
-          <span className="font-outfit font-bold text-lg text-gray-900">Koji Admin</span>
+          <span className="font-outfit font-bold text-[18px] text-[#0E172C] tracking-tight">Koji Admin</span>
         </div>
         <button
           onClick={() => setIsSidebarOpen(true)}
