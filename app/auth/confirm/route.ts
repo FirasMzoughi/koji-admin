@@ -1,3 +1,4 @@
+// Route handler: exchanges Supabase PKCE code then redirects to /auth/callback UI
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
