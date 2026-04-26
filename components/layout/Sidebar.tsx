@@ -14,7 +14,9 @@ import {
   Banknote,
   Tag,
   Mail,
-  LifeBuoy
+  LifeBuoy,
+  Truck,
+  Boxes
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -23,6 +25,8 @@ const navItems = [
   { label: 'Gestion des Utilisateurs', href: '/dashboard/users', icon: Users },
   { label: 'Devis', href: '/dashboard/quotes', icon: FileText },
   { label: 'Produits', href: '/dashboard/products', icon: Package },
+  { label: 'Fournisseurs', href: '/dashboard/fournisseurs', icon: Truck },
+  { label: 'Fournitures', href: '/dashboard/fournitures', icon: Boxes },
   { label: 'Suivi du CA', href: '/dashboard/revenue', icon: Banknote },
   { label: 'Offres & Tarifs', href: '/dashboard/pricing', icon: Tag },
   { label: 'Communications', href: '/dashboard/communications', icon: Mail },
