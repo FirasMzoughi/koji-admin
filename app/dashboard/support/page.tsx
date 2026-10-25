@@ -7,41 +7,12 @@ import {
 export default function SupportPage() {
   return (
     <div className="space-y-8 pb-32 xl:pb-10 relative h-full min-h-screen">
-      {/* Header Row */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-2">
-        <div>
-          <h1 className="text-[28px] font-bold text-[#0E172C] font-outfit leading-none mb-2">Support & Bugs</h1>
-        </div>
-        <div className="flex items-center gap-6">
-          <div className="relative hidden md:block">
-            <Search className="w-5 h-5 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-            <input 
-              type="text" 
-              placeholder="Rechercher..." 
-              className="pl-11 pr-4 py-2.5 bg-gray-100/80 rounded-full text-[14px] font-medium text-gray-700 placeholder-gray-400 border-transparent focus:border-gray-200 focus:bg-white focus:ring-4 focus:ring-gray-100 transition-all w-72 outline-none"
-            />
-          </div>
-          <div className="flex items-center gap-2">
-            <button className="p-2.5 text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
-              <Bell className="w-5 h-5" />
-            </button>
-            <button className="p-2.5 text-gray-600 hover:bg-gray-100 rounded-full transition-colors mr-2">
-              <HelpCircle className="w-5 h-5" />
-            </button>
-            <div className="w-px h-8 bg-gray-200"></div>
-            <div className="flex items-center gap-3 ml-2">
-              <div className="flex flex-col text-right hidden lg:flex">
-                <span className="text-[14px] font-bold text-[#0E172C]">Marc-Antoine</span>
-                <span className="text-[12px] font-medium text-gray-400">Administrateur Senior</span>
-              </div>
-              <div className="w-[42px] h-[42px] rounded-full bg-[#10B981] overflow-hidden border-2 border-white shadow-sm flex items-center justify-center shrink-0">
-                <div className="w-full h-full bg-[#10B981] flex items-end justify-center pt-2">
-                   <div className="w-6 h-6 rounded-t-full bg-black/40"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      {/* En-tete (25 oct) : recherche/notifications/compte deplacees dans la
+          barre partagee TopBar (components/layout/TopBar.tsx). Page retiree
+          de la sidebar (absente de la nouvelle maquette) mais laissee
+          accessible par URL directe. */}
+      <div className="mb-2">
+        <h1 className="text-[26px] font-extrabold text-[#16233F] tracking-tight">Support &amp; Bugs</h1>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">

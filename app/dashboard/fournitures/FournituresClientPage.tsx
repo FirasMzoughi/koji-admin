@@ -197,40 +197,21 @@ export default function FournituresClientPage({ initialFournitures, fournisseurs
 
   return (
     <div className="space-y-8 pb-10 relative">
-      {/* Header */}
+      {/* En-tete (25 oct, refonte maquette) : recherche/notifications/compte
+          deplacees dans la barre partagee TopBar (components/layout/TopBar.tsx)
+          - seul le champ de recherche reste ici car il filtre reellement la
+          liste (searchTerm), contrairement au champ decoratif de TopBar. */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-2">
-        <div>
-          <h1 className="text-[28px] font-bold text-[#0E172C] font-outfit leading-none">Gestion des Fournitures</h1>
-        </div>
-        <div className="flex items-center gap-6">
-          <div className="relative hidden md:block">
-            <Search className="w-5 h-5 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              placeholder="Rechercher une fourniture..."
-              className="pl-11 pr-4 py-2.5 bg-gray-100/80 rounded-full text-[14px] font-medium text-gray-700 placeholder-gray-400 border-transparent focus:border-gray-200 focus:bg-white focus:ring-4 focus:ring-gray-100 transition-all w-72 outline-none"
-              value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
-            />
-          </div>
-          <div className="flex items-center gap-2">
-            <button className="p-2.5 text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
-              <Bell className="w-5 h-5" />
-            </button>
-            <button className="p-2.5 text-gray-600 hover:bg-gray-100 rounded-full transition-colors mr-2">
-              <HelpCircle className="w-5 h-5" />
-            </button>
-            <div className="w-px h-8 bg-gray-200"></div>
-            <div className="flex items-center gap-3 ml-2">
-              <div className="hidden lg:flex flex-col text-right">
-                <span className="text-[14px] font-bold text-[#0E172C]">Marc-Antoine</span>
-                <span className="text-[12px] font-medium text-gray-400">Administrateur Senior</span>
-              </div>
-              <div className="w-[42px] h-[42px] rounded-full bg-[#10B981] overflow-hidden border-2 border-white shadow-sm flex items-center justify-center shrink-0">
-                <span className="text-white font-bold text-sm">MA</span>
-              </div>
-            </div>
-          </div>
+        <h1 className="text-[26px] font-extrabold text-[#16233F] tracking-tight">Fournitures</h1>
+        <div className="relative md:w-72">
+          <Search className="w-[15px] h-[15px] text-[#9C9FB0] absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            placeholder="Rechercher une fourniture…"
+            className="w-full h-[42px] rounded-xl border border-[#E5E5EC] bg-white pl-9 pr-3.5 text-[14px] text-[#1E2430] placeholder-[#9C9FB0] outline-none"
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+          />
         </div>
       </div>
 
@@ -243,7 +224,7 @@ export default function FournituresClientPage({ initialFournitures, fournisseurs
         </div>
         <button
           onClick={openCreate}
-          className="bg-[#1D5FE1] hover:bg-blue-700 text-white px-5 py-2.5 rounded-[0.6rem] font-bold flex items-center gap-2 shadow-lg shadow-blue-500/20 transition-all text-[14px]"
+          className="bg-[#16233F] hover:bg-[#0D1830] text-white px-5 py-2.5 rounded-[0.6rem] font-bold flex items-center gap-2 shadow-lg shadow-[#16233F]/20 transition-all text-[14px]"
         >
           <Plus className="w-4 h-4 stroke-[3]" />
           Ajouter une Fourniture
@@ -254,7 +235,7 @@ export default function FournituresClientPage({ initialFournitures, fournisseurs
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
         <div className="bg-white rounded-[1.2rem] p-6 border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.02)]">
           <span className="text-[12px] font-bold text-gray-600 tracking-wider uppercase mb-2 block">Total Fournitures</span>
-          <span className="text-[32px] font-bold text-[#1D5FE1] font-outfit leading-none">{fournitures.length}</span>
+          <span className="text-[32px] font-bold text-[#16233F] font-outfit leading-none">{fournitures.length}</span>
         </div>
         <div className="bg-white rounded-[1.2rem] p-6 border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.02)]">
           <span className="text-[12px] font-bold text-gray-600 tracking-wider uppercase mb-2 block">Fournisseurs Actifs</span>
@@ -273,7 +254,7 @@ export default function FournituresClientPage({ initialFournitures, fournisseurs
         <select
           value={filterFournisseur}
           onChange={e => setFilterFournisseur(e.target.value)}
-          className="px-4 py-2 bg-white border border-gray-200 rounded-full text-[13px] font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#1D5FE1]/20"
+          className="px-4 py-2 bg-white border border-gray-200 rounded-full text-[13px] font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#16233F]/20"
         >
           <option value="">Tous les fournisseurs</option>
           {fournisseurs.map(f => (
@@ -283,7 +264,7 @@ export default function FournituresClientPage({ initialFournitures, fournisseurs
         <select
           value={filterCategory}
           onChange={e => setFilterCategory(e.target.value)}
-          className="px-4 py-2 bg-white border border-gray-200 rounded-full text-[13px] font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#1D5FE1]/20"
+          className="px-4 py-2 bg-white border border-gray-200 rounded-full text-[13px] font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#16233F]/20"
         >
           <option value="">Toutes les catégories</option>
           {CATEGORIES.map(c => (
@@ -293,7 +274,7 @@ export default function FournituresClientPage({ initialFournitures, fournisseurs
         {(filterFournisseur || filterCategory || searchTerm) && (
           <button
             onClick={() => { setFilterFournisseur(''); setFilterCategory(''); setSearchTerm('') }}
-            className="px-4 py-2 text-[13px] font-bold text-[#1D5FE1] hover:bg-blue-50 rounded-full transition-colors"
+            className="px-4 py-2 text-[13px] font-bold text-[#16233F] hover:bg-[#EDEFFB] rounded-full transition-colors"
           >
             Réinitialiser les filtres
           </button>
@@ -351,7 +332,7 @@ export default function FournituresClientPage({ initialFournitures, fournisseurs
                   </div>
                   <div className="flex items-baseline justify-between">
                     <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wide">Vente</span>
-                    <span className="font-outfit font-bold text-[18px] text-[#1D5FE1] leading-none">
+                    <span className="font-outfit font-bold text-[18px] text-[#16233F] leading-none">
                       {Number(f.prix_vente_ht || 0).toLocaleString('fr-FR', { minimumFractionDigits: 2 })} €
                     </span>
                   </div>
@@ -370,9 +351,9 @@ export default function FournituresClientPage({ initialFournitures, fournisseurs
 
         <div
           onClick={openCreate}
-          className="border-[2px] border-dashed border-gray-200 rounded-[1.2rem] flex flex-col items-center justify-center cursor-pointer hover:border-[#1D5FE1] hover:bg-blue-50/20 transition-all p-8 min-h-[340px] group bg-gray-50/30"
+          className="border-[2px] border-dashed border-gray-200 rounded-[1.2rem] flex flex-col items-center justify-center cursor-pointer hover:border-[#16233F] hover:bg-[#EDEFFB]/20 transition-all p-8 min-h-[340px] group bg-gray-50/30"
         >
-          <div className="w-[52px] h-[52px] rounded-full bg-white border border-gray-100 flex items-center justify-center text-[#1D5FE1] mb-5 shadow-sm group-hover:scale-110 transition-transform">
+          <div className="w-[52px] h-[52px] rounded-full bg-white border border-gray-100 flex items-center justify-center text-[#16233F] mb-5 shadow-sm group-hover:scale-110 transition-transform">
             <Plus className="w-6 h-6 stroke-[2]" />
           </div>
           <span className="font-bold text-[#0E172C] text-[15px] mb-1.5">Nouvelle Fourniture</span>
@@ -404,24 +385,24 @@ export default function FournituresClientPage({ initialFournitures, fournisseurs
                 <div className="space-y-4">
                   <div>
                     <label className="block text-[13px] font-bold text-[#0E172C] mb-1.5">Nom de la Fourniture *</label>
-                    <input required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1D5FE1]/20 focus:border-[#1D5FE1] text-[14px]" placeholder="ex. Peinture Tollens 10L" />
+                    <input required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#16233F]/20 focus:border-[#16233F] text-[14px]" placeholder="ex. Peinture Tollens 10L" />
                   </div>
                   <div>
                     <label className="block text-[13px] font-bold text-[#0E172C] mb-1.5">Catégorie</label>
-                    <select value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#1D5FE1]/20 focus:border-[#1D5FE1] text-[14px]">
+                    <select value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#16233F]/20 focus:border-[#16233F] text-[14px]">
                       {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
                     </select>
                   </div>
                   <div>
                     <label className="block text-[13px] font-bold text-[#0E172C] mb-1.5">Fournisseur</label>
-                    <select value={formData.fournisseur_id} onChange={e => setFormData({ ...formData, fournisseur_id: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#1D5FE1]/20 focus:border-[#1D5FE1] text-[14px]">
+                    <select value={formData.fournisseur_id} onChange={e => setFormData({ ...formData, fournisseur_id: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#16233F]/20 focus:border-[#16233F] text-[14px]">
                       <option value="">— Aucun (Divers) —</option>
                       {fournisseurs.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
                     </select>
                   </div>
                   <div>
                     <label className="block text-[13px] font-bold text-[#0E172C] mb-1.5">Conditionnement</label>
-                    <input value={formData.conditionnement} onChange={e => setFormData({ ...formData, conditionnement: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1D5FE1]/20 focus:border-[#1D5FE1] text-[14px]" placeholder="ex. Pot de 10 L" />
+                    <input value={formData.conditionnement} onChange={e => setFormData({ ...formData, conditionnement: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#16233F]/20 focus:border-[#16233F] text-[14px]" placeholder="ex. Pot de 10 L" />
                   </div>
                 </div>
 
@@ -429,20 +410,20 @@ export default function FournituresClientPage({ initialFournitures, fournisseurs
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-[13px] font-bold text-[#0E172C] mb-1.5">Prix d'Achat HT (€)</label>
-                      <input type="number" step="0.01" value={formData.prix_achat_ht} onChange={e => setFormData({ ...formData, prix_achat_ht: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1D5FE1]/20 focus:border-[#1D5FE1] text-[14px]" placeholder="0.00" />
+                      <input type="number" step="0.01" value={formData.prix_achat_ht} onChange={e => setFormData({ ...formData, prix_achat_ht: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#16233F]/20 focus:border-[#16233F] text-[14px]" placeholder="0.00" />
                     </div>
                     <div>
                       <label className="block text-[13px] font-bold text-[#0E172C] mb-1.5">Prix de Vente HT (€) *</label>
-                      <input type="number" step="0.01" required value={formData.prix_vente_ht} onChange={e => setFormData({ ...formData, prix_vente_ht: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1D5FE1]/20 focus:border-[#1D5FE1] text-[14px]" placeholder="0.00" />
+                      <input type="number" step="0.01" required value={formData.prix_vente_ht} onChange={e => setFormData({ ...formData, prix_vente_ht: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#16233F]/20 focus:border-[#16233F] text-[14px]" placeholder="0.00" />
                     </div>
                   </div>
                   <div>
                     <label className="block text-[13px] font-bold text-[#0E172C] mb-1.5">Code-Barre</label>
-                    <input value={formData.barcode} onChange={e => setFormData({ ...formData, barcode: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1D5FE1]/20 focus:border-[#1D5FE1] text-[14px]" placeholder="EAN13..." />
+                    <input value={formData.barcode} onChange={e => setFormData({ ...formData, barcode: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#16233F]/20 focus:border-[#16233F] text-[14px]" placeholder="EAN13..." />
                   </div>
                   <div>
                     <label className="block text-[13px] font-bold text-[#0E172C] mb-1.5">URL Source (catalogue)</label>
-                    <input value={formData.source_url} onChange={e => setFormData({ ...formData, source_url: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1D5FE1]/20 focus:border-[#1D5FE1] text-[14px]" placeholder="https://..." />
+                    <input value={formData.source_url} onChange={e => setFormData({ ...formData, source_url: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#16233F]/20 focus:border-[#16233F] text-[14px]" placeholder="https://..." />
                   </div>
                   <div>
                     <label className="block text-[13px] font-bold text-[#0E172C] mb-1.5">Image</label>
@@ -455,11 +436,11 @@ export default function FournituresClientPage({ initialFournitures, fournisseurs
                           className="hidden"
                           disabled={uploadingImage}
                         />
-                        <div className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 border-dashed rounded-xl text-gray-500 hover:bg-[#F0F4FF] hover:border-[#1D5FE1] transition-colors flex items-center justify-center gap-2">
+                        <div className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 border-dashed rounded-xl text-gray-500 hover:bg-[#F0F4FF] hover:border-[#16233F] transition-colors flex items-center justify-center gap-2">
                           {uploadingImage ? (
                             <>
-                              <Loader2 className="w-4 h-4 animate-spin text-[#1D5FE1]" />
-                              <span className="text-[13px] font-medium text-[#1D5FE1]">Chargement...</span>
+                              <Loader2 className="w-4 h-4 animate-spin text-[#16233F]" />
+                              <span className="text-[13px] font-medium text-[#16233F]">Chargement...</span>
                             </>
                           ) : (
                             <>
@@ -480,7 +461,7 @@ export default function FournituresClientPage({ initialFournitures, fournisseurs
                     <input
                       value={formData.image_url}
                       onChange={e => setFormData({ ...formData, image_url: e.target.value })}
-                      className="mt-2 w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-700 text-[12px] focus:outline-none focus:ring-1 focus:ring-[#1D5FE1]/20"
+                      className="mt-2 w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-700 text-[12px] focus:outline-none focus:ring-1 focus:ring-[#16233F]/20"
                       placeholder="ou coller une URL d'image"
                     />
                   </div>
@@ -492,7 +473,7 @@ export default function FournituresClientPage({ initialFournitures, fournisseurs
                 <button
                   type="submit"
                   disabled={loading || uploadingImage}
-                  className="bg-[#1D5FE1] hover:bg-blue-700 text-white px-7 py-2.5 rounded-xl font-bold shadow-lg shadow-blue-500/20 disabled:opacity-70 transition-all flex items-center gap-2 text-[14px]"
+                  className="bg-[#16233F] hover:bg-[#0D1830] text-white px-7 py-2.5 rounded-xl font-bold shadow-lg shadow-[#16233F]/20 disabled:opacity-70 transition-all flex items-center gap-2 text-[14px]"
                 >
                   {loading && <Loader2 className="w-4 h-4 animate-spin" />}
                   {editingId ? 'Enregistrer' : 'Ajouter'}

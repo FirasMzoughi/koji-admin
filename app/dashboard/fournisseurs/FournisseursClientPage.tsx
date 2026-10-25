@@ -126,40 +126,21 @@ export default function FournisseursClientPage({ initialFournisseurs, countMap }
 
   return (
     <div className="space-y-8 pb-10 relative">
-      {/* Header */}
+      {/* En-tete (25 oct, refonte maquette) : recherche/notifications/compte
+          deplacees dans la barre partagee TopBar (components/layout/TopBar.tsx)
+          - seul le champ de recherche reste ici car il filtre reellement la
+          liste (searchTerm), contrairement au champ decoratif de TopBar. */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-2">
-        <div>
-          <h1 className="text-[28px] font-bold text-[#0E172C] font-outfit leading-none">Gestion des Fournisseurs</h1>
-        </div>
-        <div className="flex items-center gap-6">
-          <div className="relative hidden md:block">
-            <Search className="w-5 h-5 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              placeholder="Rechercher un fournisseur..."
-              className="pl-11 pr-4 py-2.5 bg-gray-100/80 rounded-full text-[14px] font-medium text-gray-700 placeholder-gray-400 border-transparent focus:border-gray-200 focus:bg-white focus:ring-4 focus:ring-gray-100 transition-all w-72 outline-none"
-              value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
-            />
-          </div>
-          <div className="flex items-center gap-2">
-            <button className="p-2.5 text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
-              <Bell className="w-5 h-5" />
-            </button>
-            <button className="p-2.5 text-gray-600 hover:bg-gray-100 rounded-full transition-colors mr-2">
-              <HelpCircle className="w-5 h-5" />
-            </button>
-            <div className="w-px h-8 bg-gray-200"></div>
-            <div className="flex items-center gap-3 ml-2">
-              <div className="hidden lg:flex flex-col text-right">
-                <span className="text-[14px] font-bold text-[#0E172C]">Marc-Antoine</span>
-                <span className="text-[12px] font-medium text-gray-400">Administrateur Senior</span>
-              </div>
-              <div className="w-[42px] h-[42px] rounded-full bg-[#10B981] overflow-hidden border-2 border-white shadow-sm flex items-center justify-center shrink-0">
-                <span className="text-white font-bold text-sm">MA</span>
-              </div>
-            </div>
-          </div>
+        <h1 className="text-[26px] font-extrabold text-[#16233F] tracking-tight">Fournisseurs</h1>
+        <div className="relative md:w-72">
+          <Search className="w-[15px] h-[15px] text-[#9C9FB0] absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            placeholder="Rechercher un fournisseur…"
+            className="w-full h-[42px] rounded-xl border border-[#E5E5EC] bg-white pl-9 pr-3.5 text-[14px] text-[#1E2430] placeholder-[#9C9FB0] outline-none"
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+          />
         </div>
       </div>
 
@@ -172,7 +153,7 @@ export default function FournisseursClientPage({ initialFournisseurs, countMap }
         </div>
         <button
           onClick={openCreate}
-          className="bg-[#1D5FE1] hover:bg-blue-700 text-white px-5 py-2.5 rounded-[0.6rem] font-bold flex items-center gap-2 shadow-lg shadow-blue-500/20 transition-all text-[14px]"
+          className="bg-[#16233F] hover:bg-[#0D1830] text-white px-5 py-2.5 rounded-[0.6rem] font-bold flex items-center gap-2 shadow-lg shadow-[#16233F]/20 transition-all text-[14px]"
         >
           <Plus className="w-4 h-4 stroke-[3]" />
           Ajouter un Fournisseur
@@ -224,7 +205,7 @@ export default function FournisseursClientPage({ initialFournisseurs, countMap }
                 </div>
               )}
               {f.website && (
-                <div className="flex items-center gap-2 text-[13px] text-[#1D5FE1] font-medium">
+                <div className="flex items-center gap-2 text-[13px] text-[#16233F] font-medium">
                   <Globe className="w-3.5 h-3.5 text-gray-400 shrink-0" />
                   <a href={f.website} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} className="truncate hover:underline">
                     {f.website.replace(/^https?:\/\//, '')}
@@ -237,9 +218,9 @@ export default function FournisseursClientPage({ initialFournisseurs, countMap }
 
         <div
           onClick={openCreate}
-          className="border-[2px] border-dashed border-gray-200 rounded-[1.2rem] flex flex-col items-center justify-center cursor-pointer hover:border-[#1D5FE1] hover:bg-blue-50/20 transition-all p-8 min-h-[220px] group bg-gray-50/30"
+          className="border-[2px] border-dashed border-gray-200 rounded-[1.2rem] flex flex-col items-center justify-center cursor-pointer hover:border-[#16233F] hover:bg-[#EDEFFB]/20 transition-all p-8 min-h-[220px] group bg-gray-50/30"
         >
-          <div className="w-[52px] h-[52px] rounded-full bg-white border border-gray-100 flex items-center justify-center text-[#1D5FE1] mb-4 shadow-sm group-hover:scale-110 transition-transform">
+          <div className="w-[52px] h-[52px] rounded-full bg-white border border-gray-100 flex items-center justify-center text-[#16233F] mb-4 shadow-sm group-hover:scale-110 transition-transform">
             <Plus className="w-6 h-6 stroke-[2]" />
           </div>
           <span className="font-bold text-[#0E172C] text-[15px] mb-1.5">Nouveau Fournisseur</span>
@@ -263,33 +244,33 @@ export default function FournisseursClientPage({ initialFournisseurs, countMap }
             <form onSubmit={handleSubmit} className="p-6 space-y-5">
               <div>
                 <label className="block text-[13px] font-bold text-[#0E172C] mb-1.5">Nom du Fournisseur *</label>
-                <input required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1D5FE1]/20 focus:border-[#1D5FE1] text-[14px]" placeholder="ex. Leroy Merlin" />
+                <input required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#16233F]/20 focus:border-[#16233F] text-[14px]" placeholder="ex. Leroy Merlin" />
               </div>
 
               <div>
                 <label className="block text-[13px] font-bold text-[#0E172C] mb-1.5">URL du Logo</label>
-                <input value={formData.logo_url} onChange={e => setFormData({ ...formData, logo_url: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1D5FE1]/20 focus:border-[#1D5FE1] text-[14px]" placeholder="https://..." />
+                <input value={formData.logo_url} onChange={e => setFormData({ ...formData, logo_url: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#16233F]/20 focus:border-[#16233F] text-[14px]" placeholder="https://..." />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[13px] font-bold text-[#0E172C] mb-1.5">Site Web</label>
-                  <input value={formData.website} onChange={e => setFormData({ ...formData, website: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1D5FE1]/20 focus:border-[#1D5FE1] text-[14px]" placeholder="https://..." />
+                  <input value={formData.website} onChange={e => setFormData({ ...formData, website: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#16233F]/20 focus:border-[#16233F] text-[14px]" placeholder="https://..." />
                 </div>
                 <div>
                   <label className="block text-[13px] font-bold text-[#0E172C] mb-1.5">Téléphone</label>
-                  <input value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1D5FE1]/20 focus:border-[#1D5FE1] text-[14px]" placeholder="01 23 45 67 89" />
+                  <input value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#16233F]/20 focus:border-[#16233F] text-[14px]" placeholder="01 23 45 67 89" />
                 </div>
               </div>
 
               <div>
                 <label className="block text-[13px] font-bold text-[#0E172C] mb-1.5">Adresse</label>
-                <input value={formData.address} onChange={e => setFormData({ ...formData, address: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1D5FE1]/20 focus:border-[#1D5FE1] text-[14px]" placeholder="52 Avenue de Flandre" />
+                <input value={formData.address} onChange={e => setFormData({ ...formData, address: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#16233F]/20 focus:border-[#16233F] text-[14px]" placeholder="52 Avenue de Flandre" />
               </div>
 
               <div>
                 <label className="block text-[13px] font-bold text-[#0E172C] mb-1.5">Ville</label>
-                <input value={formData.city} onChange={e => setFormData({ ...formData, city: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1D5FE1]/20 focus:border-[#1D5FE1] text-[14px]" placeholder="Paris 19e" />
+                <input value={formData.city} onChange={e => setFormData({ ...formData, city: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#16233F]/20 focus:border-[#16233F] text-[14px]" placeholder="Paris 19e" />
               </div>
 
               <div className="pt-4 flex justify-end gap-3 border-t border-gray-50 mt-2">
@@ -297,7 +278,7 @@ export default function FournisseursClientPage({ initialFournisseurs, countMap }
                 <button
                   type="submit"
                   disabled={loading}
-                  className="bg-[#1D5FE1] hover:bg-blue-700 text-white px-7 py-2.5 rounded-xl font-bold shadow-lg shadow-blue-500/20 disabled:opacity-70 transition-all flex items-center gap-2 text-[14px]"
+                  className="bg-[#16233F] hover:bg-[#0D1830] text-white px-7 py-2.5 rounded-xl font-bold shadow-lg shadow-[#16233F]/20 disabled:opacity-70 transition-all flex items-center gap-2 text-[14px]"
                 >
                   {loading && <Loader2 className="w-4 h-4 animate-spin" />}
                   {editingId ? 'Enregistrer' : 'Ajouter'}

@@ -45,7 +45,15 @@ export default async function DashboardLayout({
     data: { user },
   } = await supabase.auth.getUser()
 
-  if (!user) {
+  // Acces reserve a un seul compte (25 oct, demande d'Amira) - c'est la
+  // vraie barriere (verifiee a chaque page /dashboard/*, pas seulement a
+  // la connexion) ; la page de connexion fait deja un controle cote
+  // client, mais celui-ci est contournable (appel direct a l'API), donc
+  // la verification serveur ici reste necessaire. Les policies RLS (voir
+  // migration SQL fournie a part) sont la 3e barriere, au niveau de la
+  // base elle-meme.
+  if (!user || user.email !== 'ablexpertrenov@gmail.com') {
+    if (user) await supabase.auth.signOut()
     redirect('/auth/login')
   }
 

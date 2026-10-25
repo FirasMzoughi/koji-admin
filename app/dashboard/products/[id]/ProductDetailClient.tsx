@@ -22,42 +22,13 @@ export default function ProductDetailClient({ product }: { product: any }) {
 
   return (
     <div className="space-y-8 pb-10 relative">
-      {/* Header Row */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-2">
-        <div className="flex items-center gap-4">
-          <Link href="/dashboard/products" className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-gray-200 text-gray-500 hover:text-[#0E172C] transition-colors shadow-sm">
-             <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
-          </Link>
-          <h1 className="text-[28px] font-bold text-[#0E172C] font-outfit leading-none">Gestion des Produits</h1>
-        </div>
-        <div className="flex items-center gap-6">
-          <div className="relative hidden lg:block">
-            <Search className="w-5 h-5 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-            <input 
-              type="text" 
-              placeholder="Rechercher un utilisateur..." 
-              className="pl-11 pr-4 py-2.5 bg-gray-100/80 rounded-full text-[14px] font-medium text-gray-700 placeholder-gray-400 border-transparent focus:border-gray-200 focus:bg-white focus:ring-4 focus:ring-gray-100 transition-all w-72 outline-none"
-            />
-          </div>
-          <div className="flex items-center gap-2">
-            <button className="p-2.5 text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
-              <Bell className="w-5 h-5" />
-            </button>
-            <button className="p-2.5 text-gray-600 hover:bg-gray-100 rounded-full transition-colors mr-2">
-              <HelpCircle className="w-5 h-5" />
-            </button>
-            <div className="w-px h-8 bg-gray-200"></div>
-            <div className="flex items-center gap-3 ml-2">
-              <div className="flex flex-col text-right hidden lg:flex">
-                <span className="text-[14px] font-bold text-[#0E172C]">Marc-Antoine</span>
-                <span className="text-[12px] font-medium text-gray-400">Administrateur Senior</span>
-              </div>
-              <div className="w-[42px] h-[42px] rounded-full bg-[#10B981] overflow-hidden border-2 border-white shadow-sm flex items-center justify-center shrink-0">
-                <span className="text-white font-bold text-sm">MA</span>
-              </div>
-            </div>
-          </div>
-        </div>
+      {/* En-tete (25 oct) : recherche/notifications/compte deplacees dans la
+          barre partagee TopBar (components/layout/TopBar.tsx). */}
+      <div className="flex items-center gap-4 mb-2">
+        <Link href="/dashboard/products" className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-[#EDEDF3] text-gray-500 hover:text-[#16233F] transition-colors shadow-sm">
+           <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
+        </Link>
+        <h1 className="text-[26px] font-extrabold text-[#16233F] tracking-tight">Produits</h1>
       </div>
       
       {/* Product Top Header */}
@@ -74,7 +45,7 @@ export default function ProductDetailClient({ product }: { product: any }) {
           </p>
         </div>
         <div className="flex items-center gap-3 shrink-0 mt-2 lg:mt-0">
-          <button className="flex items-center gap-2 bg-[#1D5FE1] hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-bold shadow-md shadow-blue-500/20 transition-all text-[13px]">
+          <button className="flex items-center gap-2 bg-[#16233F] hover:bg-[#0D1830] text-white px-5 py-2.5 rounded-xl font-bold shadow-md shadow-[#16233F]/20 transition-all text-[13px]">
             <Edit2 className="w-4 h-4" />
             Modifier
           </button>
@@ -95,7 +66,7 @@ export default function ProductDetailClient({ product }: { product: any }) {
         </div>
         <div className="flex flex-col">
           <span className="text-[10px] font-bold text-gray-500 tracking-widest uppercase mb-1.5">SKU / Marque</span>
-          <span className="text-[14px] font-bold text-[#1D5FE1] tracking-wide uppercase">{product.brand || 'ED-PR-250-SATIN'}</span>
+          <span className="text-[14px] font-bold text-[#16233F] tracking-wide uppercase">{product.brand || 'ED-PR-250-SATIN'}</span>
         </div>
         <div className="flex flex-col">
           <span className="text-[10px] font-bold text-gray-500 tracking-widest uppercase mb-1.5">Prix Base (HT)</span>
@@ -103,7 +74,7 @@ export default function ProductDetailClient({ product }: { product: any }) {
         </div>
         <div className="flex flex-col">
           <span className="text-[10px] font-bold text-gray-500 tracking-widest uppercase mb-1.5">Promotion</span>
-          <span className="text-[15px] font-bold text-[#1D5FE1]">{-15}%</span>
+          <span className="text-[15px] font-bold text-[#16233F]">{-15}%</span>
         </div>
       </div>
       
@@ -124,14 +95,14 @@ export default function ProductDetailClient({ product }: { product: any }) {
           <div>
             <div className="flex items-center justify-between mb-5 px-1">
               <h3 className="font-bold text-[17px] text-[#0E172C]">Ventes récentes</h3>
-              <a href="#" className="font-bold text-[#1D5FE1] text-[13px] hover:underline">Rapport complet</a>
+              <a href="#" className="font-bold text-[#16233F] text-[13px] hover:underline">Rapport complet</a>
             </div>
             
             <div className="space-y-4">
               {/* Dummy Sales */}
               <div className="bg-white rounded-[1.2rem] p-6 border border-gray-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)] flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-[#F0F4FF] flex items-center justify-center text-[#1D5FE1]">
+                  <div className="w-12 h-12 rounded-xl bg-[#F0F4FF] flex items-center justify-center text-[#16233F]">
                     <User className="w-5 h-5 stroke-[2.5]" />
                   </div>
                   <div>
@@ -141,13 +112,13 @@ export default function ProductDetailClient({ product }: { product: any }) {
                 </div>
                 <div className="text-right">
                   <div className="font-bold text-[#0E172C] text-[15px]">500 u.</div>
-                  <div className="text-[13px] font-bold text-[#1D5FE1] mt-0.5">{(500 * product.price_ht).toLocaleString('en-US', { minimumFractionDigits: 2 }).replace(/,/g, ' ')} €</div>
+                  <div className="text-[13px] font-bold text-[#16233F] mt-0.5">{(500 * product.price_ht).toLocaleString('en-US', { minimumFractionDigits: 2 }).replace(/,/g, ' ')} €</div>
                 </div>
               </div>
               
               <div className="bg-white rounded-[1.2rem] p-6 border border-gray-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)] flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-[#F0F4FF] flex items-center justify-center text-[#1D5FE1]">
+                  <div className="w-12 h-12 rounded-xl bg-[#F0F4FF] flex items-center justify-center text-[#16233F]">
                     <User className="w-5 h-5 stroke-[2.5]" />
                   </div>
                   <div>
@@ -157,7 +128,7 @@ export default function ProductDetailClient({ product }: { product: any }) {
                 </div>
                 <div className="text-right">
                   <div className="font-bold text-[#0E172C] text-[15px]">120 u.</div>
-                  <div className="text-[13px] font-bold text-[#1D5FE1] mt-0.5">{(120 * product.price_ht).toLocaleString('en-US', { minimumFractionDigits: 2 }).replace(/,/g, ' ')} €</div>
+                  <div className="text-[13px] font-bold text-[#16233F] mt-0.5">{(120 * product.price_ht).toLocaleString('en-US', { minimumFractionDigits: 2 }).replace(/,/g, ' ')} €</div>
                 </div>
               </div>
             </div>
@@ -168,8 +139,8 @@ export default function ProductDetailClient({ product }: { product: any }) {
         <div className="space-y-8">
           <div className="bg-white rounded-[1.5rem] p-8 border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] flex flex-col">
             <div className="flex justify-between items-start mb-6">
-              <span className="font-bold text-[14px] text-[#1D5FE1] uppercase tracking-wider">Stock</span>
-              <Settings className="w-4 h-4 text-[#1D5FE1]" />
+              <span className="font-bold text-[14px] text-[#16233F] uppercase tracking-wider">Stock</span>
+              <Settings className="w-4 h-4 text-[#16233F]" />
             </div>
             
             <div className="flex items-end justify-between mb-4">
@@ -184,7 +155,7 @@ export default function ProductDetailClient({ product }: { product: any }) {
             </div>
             
             <div className="w-full h-2.5 bg-gray-100 rounded-full mb-8 overflow-hidden">
-              <div className="h-full bg-[#1D5FE1] rounded-full" style={{ width: '85%' }}></div>
+              <div className="h-full bg-[#16233F] rounded-full" style={{ width: '85%' }}></div>
             </div>
             
             <button className="w-full py-3 rounded-xl bg-gray-50 hover:bg-gray-100 text-[#0E172C] font-bold text-[13px] transition-colors border border-gray-100">
@@ -212,26 +183,26 @@ export default function ProductDetailClient({ product }: { product: any }) {
                    <div className="w-12 h-1 bg-[#D1D1D1] rounded-full mb-1"></div>
                 </div>
                 <div className="w-16 h-20 bg-white rounded-sm flex flex-col items-center p-2 shadow-xl absolute z-20 group-hover:scale-105 transition-transform rotate-3">
-                   <div className="w-full h-2 bg-[#1D5FE1]/20 rounded-full mb-2"></div>
+                   <div className="w-full h-2 bg-[#16233F]/20 rounded-full mb-2"></div>
                    <div className="w-10 h-1.5 bg-gray-200 rounded-full mb-1"></div>
                    <div className="w-12 h-1.5 bg-gray-200 rounded-full mb-1"></div>
                    <div className="w-8 h-1.5 bg-gray-200 rounded-full mb-1"></div>
                 </div>
               </div>
               
-              <div className="aspect-square bg-white border-2 border-dashed border-gray-200 hover:border-[#1D5FE1] rounded-[1.2rem] flex flex-col items-center justify-center text-gray-400 hover:bg-blue-50/20 transition-all cursor-pointer group">
-                <Plus className="w-6 h-6 mb-2 text-gray-300 group-hover:text-[#1D5FE1] stroke-[2.5] transition-colors" />
-                <span className="text-[10px] font-bold tracking-widest uppercase text-gray-400 group-hover:text-[#1D5FE1] transition-colors">Ajouter</span>
+              <div className="aspect-square bg-white border-2 border-dashed border-gray-200 hover:border-[#16233F] rounded-[1.2rem] flex flex-col items-center justify-center text-gray-400 hover:bg-[#EDEFFB]/20 transition-all cursor-pointer group">
+                <Plus className="w-6 h-6 mb-2 text-gray-300 group-hover:text-[#16233F] stroke-[2.5] transition-colors" />
+                <span className="text-[10px] font-bold tracking-widest uppercase text-gray-400 group-hover:text-[#16233F] transition-colors">Ajouter</span>
               </div>
             </div>
           </div>
           
           <div className="bg-[#F0F4FF] rounded-[1.2rem] p-6 border border-blue-100 flex items-start gap-4">
             <div className="shrink-0 mt-0.5">
-              <Sparkles className="w-5 h-5 text-[#1D5FE1] stroke-[2]" />
+              <Sparkles className="w-5 h-5 text-[#16233F] stroke-[2]" />
             </div>
             <div>
-              <span className="text-[11px] font-bold tracking-widest uppercase text-[#1D5FE1] block mb-1">Analyse</span>
+              <span className="text-[11px] font-bold tracking-widest uppercase text-[#16233F] block mb-1">Analyse</span>
               <p className="text-[13px] font-medium text-blue-900/80 leading-relaxed">
                 Réduisez vos coûts de stockage de 12% avec l'ajustement auto.
               </p>

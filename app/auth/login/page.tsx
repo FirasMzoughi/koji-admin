@@ -20,13 +20,22 @@ export default function LoginPage() {
     setError(null)
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
 
       if (error) {
         throw error
+      }
+
+      // Acces reserve a un seul compte (25 oct, demande d'Amira) - la
+      // vraie barriere est cote serveur (app/dashboard/layout.tsx) et au
+      // niveau des policies RLS, mais on evite ici de laisser un compte
+      // refuse "entrer" avant d'etre renvoye sans explication.
+      if (data.user?.email !== 'ablexpertrenov@gmail.com') {
+        await supabase.auth.signOut()
+        throw new Error("Ce compte n'a pas accès à l'administration Koji.")
       }
 
       router.push('/dashboard')
@@ -103,13 +112,6 @@ export default function LoginPage() {
               'Se connecter'
             )}
           </button>
-
-          <div className="text-center text-sm text-gray-500">
-            Pas encore de compte ?{' '}
-            <a href="/auth/signup" className="text-[#1D5FE1] hover:text-blue-800 font-bold transition-colors">
-              S'inscrire
-            </a>
-          </div>
         </form>
       </div>
     </div>

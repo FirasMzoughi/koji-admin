@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Menu } from 'lucide-react'
 import Sidebar from '@/components/layout/Sidebar'
+import TopBar from '@/components/layout/TopBar'
 
 export default function DashboardShell({
   children
@@ -12,7 +13,7 @@ export default function DashboardShell({
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#F6F7FB]">
       {/* Mobile Header */}
       <div className="md:hidden flex items-center justify-between p-4 bg-white border-b border-gray-100 sticky top-0 z-40">
         <div className="flex items-center gap-2">
@@ -36,8 +37,9 @@ export default function DashboardShell({
       />
 
       {/* Main Content */}
-      <main className={`min-h-screen transition-all duration-300 ${isSidebarOpen ? 'overflow-hidden' : ''} md:pl-64`}>
-        <div className="max-w-7xl mx-auto p-4 md:p-8">
+      <main className={`min-h-screen flex flex-col transition-all duration-300 ${isSidebarOpen ? 'overflow-hidden' : ''} md:pl-[264px]`}>
+        <TopBar />
+        <div className="max-w-7xl mx-auto w-full p-4 md:p-8">
           {children}
         </div>
       </main>
