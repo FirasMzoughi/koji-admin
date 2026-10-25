@@ -55,7 +55,7 @@ export default async function DashboardPage() {
     supabase.from('products').select('*', { count: 'exact', head: true }),
     supabase.from('quotes').select('total_amount').eq('status', 'en_cours'),
     supabase.from('quotes').select('client_name, total_amount, status, created_at').order('created_at', { ascending: false }).limit(5),
-    supabase.from('users').select('first_name, last_name, email, profession, is_pro, created_at').order('created_at', { ascending: false }).limit(5),
+    supabase.from('users').select('email, profession, is_pro, created_at').order('created_at', { ascending: false }).limit(5),
   ])
 
   const potentialValue = activeQuotes?.reduce((sum, q) => sum + (Number(q.total_amount) || 0), 0) || 0
@@ -71,7 +71,7 @@ export default async function DashboardPage() {
     ...(recentUsers || []).map((u): Activity => ({
       icon: UserPlus,
       title: u.is_pro ? 'Nouvel utilisateur Pro' : 'Nouvel utilisateur',
-      sub: `${[u.first_name, u.last_name].filter(Boolean).join(' ') || u.email} · ${u.profession || 'Particulier'}`,
+      sub: `${u.email} · ${u.profession || 'Particulier'}`,
       at: u.created_at,
     })),
   ].sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime()).slice(0, 6)

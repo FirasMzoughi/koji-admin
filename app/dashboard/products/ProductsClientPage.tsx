@@ -2,9 +2,9 @@
 
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase'
-import { 
-  Plus, Package, Search, Trash2, Edit2, Loader2, Image as ImageIcon,
-  Bell, HelpCircle, TrendingUp, Sparkles, Box, Wrench, PenTool, Layers, ChevronDown
+import {
+  Plus, Search, Trash2, Edit2, Loader2, Image as ImageIcon,
+  Box, Wrench, PenTool, Layers, Tag
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -23,6 +23,11 @@ interface Product {
 export default function ProductsClientPage({ initialProducts }: { initialProducts: Product[] }) {
   const [products, setProducts] = useState(initialProducts)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  // Edition (25 oct) : meme modal que la creation, juste pre-remplie et en
+  // mode UPDATE quand editingId est pose - avant ce changement il n'y
+  // avait aucun moyen de modifier un produit existant (le crayon de
+  // chaque carte n'avait pas de onClick).
+  const [editingId, setEditingId] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [uploadingImage, setUploadingImage] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
@@ -79,43 +84,62 @@ export default function ProductsClientPage({ initialProducts }: { initialProduct
     }
   }
 
+  function openCreate() {
+    setEditingId(null)
+    setFormData({ name: '', price_ht: '', unit: 'u', category: 'Materiaux', brand: '', image_url: '', packaging: '' })
+    setIsModalOpen(true)
+  }
+
+  function openEdit(e: React.MouseEvent, product: Product) {
+    e.preventDefault()
+    e.stopPropagation()
+    setEditingId(product.id)
+    setFormData({
+      name: product.name,
+      price_ht: String(product.price_ht ?? ''),
+      unit: product.unit || 'u',
+      category: product.category || 'Materiaux',
+      brand: product.brand || '',
+      image_url: product.image_url || '',
+      packaging: product.packaging || ''
+    })
+    setIsModalOpen(true)
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
 
     try {
-      const { data, error } = await supabase
-        .from('products')
-        .insert([{
-          name: formData.name,
-          price_ht: parseFloat(formData.price_ht),
-          unit: formData.unit,
-          category: formData.category,
-          brand: formData.brand,
-          image_url: formData.image_url,
-          packaging: formData.packaging,
-          consumption_rule_type: 'fixed', // Default for simplified admin
-          consumption_rule_factor: 1.0
-        }])
-        .select()
-        .single()
+      const payload = {
+        name: formData.name,
+        price_ht: parseFloat(formData.price_ht),
+        unit: formData.unit,
+        category: formData.category,
+        brand: formData.brand,
+        image_url: formData.image_url,
+        packaging: formData.packaging
+      }
 
-      if (error) throw error
+      if (editingId) {
+        const { data, error } = await supabase.from('products').update(payload).eq('id', editingId).select().single()
+        if (error) throw error
+        setProducts(products.map(p => p.id === editingId ? data : p))
+      } else {
+        const { data, error } = await supabase
+          .from('products')
+          .insert([{ ...payload, consumption_rule_type: 'fixed', consumption_rule_factor: 1.0 }])
+          .select()
+          .single()
+        if (error) throw error
+        setProducts([data, ...products])
+      }
 
-      setProducts([data, ...products])
       setIsModalOpen(false)
-      setFormData({
-        name: '',
-        price_ht: '',
-        unit: 'u',
-        category: 'Materiaux',
-        brand: '',
-        image_url: '',
-        packaging: ''
-      })
+      setEditingId(null)
       router.refresh()
     } catch (err) {
-      alert('Erreur lors de l\'ajout du produit : ' + (err as any).message)
+      alert(`Erreur lors de l'enregistrement du produit : ${(err as any).message}`)
     } finally {
       setLoading(false)
     }
@@ -172,7 +196,7 @@ export default function ProductsClientPage({ initialProducts }: { initialProduct
           </p>
         </div>
         <button
-          onClick={() => setIsModalOpen(true)}
+          onClick={openCreate}
           className="bg-[#16233F] hover:bg-[#0D1830] text-white px-5 py-2.5 rounded-[0.6rem] font-bold flex items-center gap-2 shadow-lg shadow-[#16233F]/20 transition-all text-[14px]"
         >
           <Plus className="w-4 h-4 stroke-[3]" />
@@ -180,51 +204,17 @@ export default function ProductsClientPage({ initialProducts }: { initialProduct
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-[#0E172C]">
-        <div className="bg-white rounded-[1.2rem] p-7 border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.02)] flex flex-col justify-center">
-          <span className="text-[12px] font-bold text-gray-600 tracking-wider uppercase mb-3">Total</span>
-          <span className="text-[34px] font-bold text-[#16233F] font-outfit leading-none mb-3">1,284</span>
-          <div className="flex items-center gap-1 text-[#10B981]">
-            <TrendingUp className="w-3.5 h-3.5 stroke-[2.5]" />
-            <span className="text-[11px] font-bold tracking-wide">+12% ce mois</span>
-          </div>
+      {/* KPI reels (25 oct) - remplace un total fige "1,284" + une
+          tendance "+12%" inventee, et une bannière "analyse IA"
+          promettant une fonctionnalite qui n'existe pas. */}
+      <div className="grid grid-cols-2 gap-4 mb-8 text-[#0E172C] max-w-xl">
+        <div className="bg-white rounded-2xl p-5 border border-gray-100 flex flex-col gap-1">
+          <span className="text-[12px] text-gray-400 font-semibold">Total produits</span>
+          <span className="text-[26px] font-extrabold text-[#16233F]">{products.length}</span>
         </div>
-        
-        <div className="md:col-span-2 bg-[#1b62f8] bg-gradient-to-r from-[#1753d1] to-[#2573ff] rounded-[1.2rem] p-8 shadow-lg text-white relative overflow-hidden flex flex-col justify-center">
-          <div className="relative z-10 w-full max-w-lg">
-            <h3 className="text-[18px] font-bold leading-tight mb-2 tracking-tight text-white shadow-sm">Optimisez votre inventaire</h3>
-            <p className="text-[13px] text-white/85 leading-relaxed font-medium mb-5 backdrop-blur-sm max-w-md opacity-90">
-              Utilisez l'analyse IA pour prédire les besoins en matériaux et réduire les coûts de stockage de 15%.
-            </p>
-            <button className="bg-white/20 hover:bg-white/30 backdrop-blur-md text-white font-bold rounded-full px-5 py-2 transition-colors text-[11px] shadow-sm whitespace-nowrap inline-block border-transparent">
-              Découvrir l'analyse IA
-            </button>
-          </div>
-          {/* Decorative network graphic */}
-          <div className="absolute right-0 top-0 w-64 h-full pointer-events-none opacity-40">
-            <div className="w-full h-full relative" style={{ transform: 'translate(20%, 20%)', strokeWidth: '1.5px' }}>
-              <svg viewBox="0 0 120 120" stroke="currentColor" fill="currentColor">
-                {/* Dots and lines imitating a neural/graph network */}
-                <circle cx="20" cy="80" r="4" fill="white" stroke="none" />
-                <circle cx="50" cy="40" r="4" fill="white" stroke="none" />
-                <circle cx="70" cy="65" r="4" fill="white" stroke="none" />
-                <circle cx="100" cy="30" r="4" fill="white" stroke="none" />
-                <path d="M20 80 L50 40 L70 65 L100 30" fill="none" stroke="white" />
-                
-                <circle cx="45" cy="5" r="2.5" fill="none" stroke="white" />
-                <path d="M45 5 L50 40" fill="none" stroke="white" strokeDasharray="3 3"/>
-                
-                <circle cx="85" cy="15" r="2.5" fill="none" stroke="white" />
-                <path d="M100 30 L85 15" fill="none" stroke="white" strokeDasharray="3 3" />
-                
-                <path d="M70 65 L90 85" fill="none" stroke="white" strokeDasharray="3 3" />
-                <circle cx="90" cy="85" r="2.5" fill="none" stroke="white" />
-                
-                <path d="M20 80 L10 110" fill="none" stroke="white" strokeDasharray="3 3" />
-                <circle cx="10" cy="110" r="2.5" fill="none" stroke="white" />
-              </svg>
-            </div>
-          </div>
+        <div className="bg-white rounded-2xl p-5 border border-gray-100 flex flex-col gap-1">
+          <span className="text-[12px] text-gray-400 font-semibold">Catégories</span>
+          <span className="text-[26px] font-extrabold text-[#16233F]">{new Set(products.map(p => p.category).filter(Boolean)).size}</span>
         </div>
       </div>
 
@@ -265,9 +255,13 @@ export default function ProductsClientPage({ initialProducts }: { initialProduct
                     </span>
                     <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">/{product.unit}</span>
                   </div>
-                  <div className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-200 text-gray-500 hover:border-[#16233F] hover:text-[#16233F] transition-colors shadow-sm bg-white">
+                  <button
+                    onClick={(e) => openEdit(e, product)}
+                    aria-label="Modifier le produit"
+                    className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-200 text-gray-500 hover:border-[#16233F] hover:text-[#16233F] transition-colors shadow-sm bg-white"
+                  >
                     <Edit2 className="w-3.5 h-3.5" />
-                  </div>
+                  </button>
                 </div>
               </div>
             </Link>
@@ -275,8 +269,8 @@ export default function ProductsClientPage({ initialProducts }: { initialProduct
         ))}
         
         {/* Add Product Card */}
-        <div 
-          onClick={() => setIsModalOpen(true)}
+        <div
+          onClick={openCreate}
           className="border-[2px] border-dashed border-gray-200 rounded-[1.2rem] flex flex-col items-center justify-center cursor-pointer hover:border-[#16233F] hover:bg-[#EDEFFB]/20 transition-all p-8 min-h-[340px] group bg-gray-50/30"
         >
           <div className="w-[52px] h-[52px] rounded-full bg-white border border-gray-100 flex items-center justify-center text-[#16233F] mb-5 shadow-sm group-hover:scale-110 transition-transform">
@@ -287,20 +281,13 @@ export default function ProductsClientPage({ initialProducts }: { initialProduct
         </div>
       </div>
 
-      <div className="flex justify-center mt-10">
-        <button className="flex items-center gap-2 bg-[#F3F4F6] hover:bg-[#E5E7EB] text-[#374151] px-6 py-2.5 rounded-full text-[13px] font-bold transition-colors">
-          Afficher plus de produits
-          <ChevronDown className="w-4 h-4 stroke-[3]" />
-        </button>
-      </div>
-
       {/* Add Product Modal (Unchanged Layout mostly, just matching styles loosely if ever opened) */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-[#0E172C]/40 z-50 flex items-center justify-center p-4 backdrop-blur-[2px]">
           <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
             <div className="p-6 border-b border-gray-100 flex justify-between items-center sticky top-0 bg-white/95 backdrop-blur z-10">
-              <h2 className="text-xl font-bold font-outfit text-[#0E172C]">Ajouter un Nouveau Produit</h2>
-              <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-[#0E172C]">
+              <h2 className="text-xl font-bold font-outfit text-[#0E172C]">{editingId ? 'Modifier le produit' : 'Ajouter un nouveau produit'}</h2>
+              <button onClick={() => { setIsModalOpen(false); setEditingId(null) }} className="text-gray-400 hover:text-[#0E172C]">
                 <div className="w-8 h-8 rounded-full bg-gray-50 hover:bg-gray-100 flex items-center justify-center transition-colors">✕</div>
               </button>
             </div>
@@ -390,14 +377,14 @@ export default function ProductsClientPage({ initialProducts }: { initialProduct
               </div>
 
               <div className="pt-6 flex justify-end gap-3 sticky bottom-0 bg-white z-10 border-t border-gray-50 mt-4">
-                <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 text-[#0E172C] font-bold hover:bg-gray-100 rounded-xl transition-colors text-[14px]">Annuler</button>
+                <button type="button" onClick={() => { setIsModalOpen(false); setEditingId(null) }} className="px-5 py-2.5 text-[#0E172C] font-bold hover:bg-gray-100 rounded-xl transition-colors text-[14px]">Annuler</button>
                 <button
                   type="submit"
                   disabled={loading || uploadingImage}
                   className="bg-[#16233F] hover:bg-[#0D1830] text-white px-7 py-2.5 rounded-xl font-bold shadow-lg shadow-[#16233F]/20 disabled:opacity-70 transition-all flex items-center gap-2 text-[14px]"
                 >
                   {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-                  Ajouter Produit
+                  {editingId ? 'Enregistrer' : 'Ajouter le produit'}
                 </button>
               </div>
             </form>
