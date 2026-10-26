@@ -4,29 +4,46 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ChevronRight } from 'lucide-react'
 
+// Correction (26 oct, audit Selenium) : le devis koji n'a PAS de colonnes
+// client_name/total_amount/signed_at/rooms/tasks (verifie sur les 132 vrais
+// devis en base : 0 sur 132 ont ces colonnes remplies). Le vrai client est
+// dans `metadata.client`, le vrai montant dans `total_ht`, la vraie date de
+// signature dans `web_extras.signedAt`, les vraies lignes dans `items`. La
+// version precedente affichait donc "Nouveau prospect"/"0,00 €" pour les 132
+// devis reels — l'audit initial qui a servi de base avait decrit le mauvais
+// schema.
 export type QuoteRow = {
   id: string
-  client_name: string | null
-  client_email: string | null
-  total_amount: number | null
   status: string | null
   created_at: string
-  signed_at: string | null
+  total_ht: number | null
+  total_ttc: number | null
+  reference: string | null
+  metadata: { client?: { name?: string; email?: string; phone?: string } } | null
+  web_extras: { signedAt?: string } | null
 }
 
 const STATUS_STYLE: Record<string, { label: string; bg: string; fg: string }> = {
-  signed: { label: 'Signé', bg: '#E6F5EE', fg: '#1E8E5A' },
   signe: { label: 'Signé', bg: '#E6F5EE', fg: '#1E8E5A' },
-  accepted: { label: 'Signé', bg: '#E6F5EE', fg: '#1E8E5A' },
-  accepte: { label: 'Signé', bg: '#E6F5EE', fg: '#1E8E5A' },
-  refused: { label: 'Refusé', bg: '#FBE9E5', fg: '#C4452D' },
+  envoye: { label: 'Envoyé', bg: '#E8ECFD', fg: '#3B5BDB' },
+  brouillon: { label: 'Brouillon', bg: '#F0F1F5', fg: '#6B7280' },
+  draft: { label: 'Brouillon', bg: '#F0F1F5', fg: '#6B7280' },
   refuse: { label: 'Refusé', bg: '#FBE9E5', fg: '#C4452D' },
-  rejected: { label: 'Refusé', bg: '#FBE9E5', fg: '#C4452D' },
 }
 
 function statusInfo(status: string | null) {
   const key = (status || '').toLowerCase()
-  return STATUS_STYLE[key] || { label: 'En attente', bg: '#FDF3DC', fg: '#B7791F' }
+  return STATUS_STYLE[key] || { label: status || 'Autre', bg: '#F0F1F5', fg: '#6B7280' }
+}
+
+function clientName(q: QuoteRow): string | null {
+  return q.metadata?.client?.name || null
+}
+function amountHt(q: QuoteRow): number {
+  return Number(q.total_ht ?? q.total_ttc ?? 0)
+}
+function signedAt(q: QuoteRow): string | null {
+  return q.web_extras?.signedAt || null
 }
 
 function initials(name: string | null) {
@@ -54,33 +71,34 @@ function csvEscape(value: string) {
 // filtre et "Exporter" soient reellement fonctionnels (avant : 100%
 // decoratif) ; lignes cliquables -> fiche detail reelle.
 export default function QuotesClientPage({ initialQuotes }: { initialQuotes: QuoteRow[] }) {
-  const [filter, setFilter] = useState<'all' | 'pending' | 'signed' | 'refused'>('all')
+  const [filter, setFilter] = useState<'all' | 'brouillon' | 'envoye' | 'signe'>('all')
   const router = useRouter()
   const quotes = initialQuotes
 
-  const pending = quotes.filter((q) => statusInfo(q.status).label === 'En attente').length
-  const signed = quotes.filter((q) => statusInfo(q.status).label === 'Signé').length
-  const refused = quotes.filter((q) => statusInfo(q.status).label === 'Refusé').length
-  const totalVolume = quotes.reduce((sum, q) => sum + Number(q.total_amount || 0), 0)
+  const brouillon = quotes.filter((q) => statusInfo(q.status).label === 'Brouillon').length
+  const envoye = quotes.filter((q) => statusInfo(q.status).label === 'Envoyé').length
+  const signe = quotes.filter((q) => statusInfo(q.status).label === 'Signé').length
+  const totalVolume = quotes.reduce((sum, q) => sum + amountHt(q), 0)
 
   const filteredQuotes = quotes.filter((q) => {
     const label = statusInfo(q.status).label
-    if (filter === 'pending') return label === 'En attente'
-    if (filter === 'signed') return label === 'Signé'
-    if (filter === 'refused') return label === 'Refusé'
+    if (filter === 'brouillon') return label === 'Brouillon'
+    if (filter === 'envoye') return label === 'Envoyé'
+    if (filter === 'signe') return label === 'Signé'
     return true
   })
 
   const handleExport = () => {
-    const header = ['client_name', 'total_amount', 'status', 'created_at', 'signed_at']
+    const header = ['reference', 'client', 'montant_ht', 'statut', 'created_at', 'signed_at']
     const lines = [header.join(',')]
     for (const q of filteredQuotes) {
       lines.push([
-        csvEscape(q.client_name || ''),
-        String(q.total_amount ?? ''),
+        csvEscape(q.reference || ''),
+        csvEscape(clientName(q) || ''),
+        String(amountHt(q)),
         csvEscape(statusInfo(q.status).label),
         q.created_at || '',
-        q.signed_at || ''
+        signedAt(q) || ''
       ].join(','))
     }
     const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' })
@@ -106,17 +124,15 @@ export default function QuotesClientPage({ initialQuotes }: { initialQuotes: Quo
         <div className="bg-white border border-[#EDEDF3] rounded-2xl p-4 flex flex-col gap-1">
           <span className="text-[12px] text-gray-400 font-semibold">Total devis</span>
           <span className="text-[26px] font-extrabold text-[#16233F]">{quotes.length}</span>
-          <span className="text-[12px] text-gray-500">cette année</span>
         </div>
         <div className="bg-white border border-[#EDEDF3] rounded-2xl p-4 flex flex-col gap-1">
-          <span className="text-[12px] text-gray-400 font-semibold">En attente</span>
-          <span className="text-[26px] font-extrabold text-[#16233F]">{pending}</span>
-          <span className="text-[12px] text-gray-500">à suivre</span>
+          <span className="text-[12px] text-gray-400 font-semibold">Brouillons</span>
+          <span className="text-[26px] font-extrabold text-[#16233F]">{brouillon}</span>
         </div>
         <div className="bg-white border border-[#EDEDF3] rounded-2xl p-4 flex flex-col gap-1">
           <span className="text-[12px] text-gray-400 font-semibold">Signés</span>
-          <span className="text-[26px] font-extrabold text-[#16233F]">{signed}</span>
-          <span className="text-[12px] text-gray-500">taux {quotes.length ? Math.round((signed / quotes.length) * 100) : 0} %</span>
+          <span className="text-[26px] font-extrabold text-[#16233F]">{signe}</span>
+          <span className="text-[12px] text-gray-500">taux {quotes.length ? Math.round((signe / quotes.length) * 100) : 0} %</span>
         </div>
         <div className="bg-white border border-[#EDEDF3] rounded-2xl p-4 flex flex-col gap-1">
           <span className="text-[12px] text-gray-400 font-semibold">Volume total</span>
@@ -127,9 +143,9 @@ export default function QuotesClientPage({ initialQuotes }: { initialQuotes: Quo
 
       <div className="flex gap-2">
         <button onClick={() => setFilter('all')} className={`text-[13px] font-semibold px-3.5 py-2.5 rounded-full border transition-colors ${filter === 'all' ? 'bg-[#16233F] text-white border-[#16233F]' : 'bg-white text-gray-500 border-[#EDEDF3]'}`}>Tous · {quotes.length}</button>
-        <button onClick={() => setFilter('pending')} className={`text-[13px] font-semibold px-3.5 py-2.5 rounded-full border transition-colors ${filter === 'pending' ? 'bg-[#16233F] text-white border-[#16233F]' : 'bg-white text-gray-500 border-[#EDEDF3]'}`}>En attente · {pending}</button>
-        <button onClick={() => setFilter('signed')} className={`text-[13px] font-semibold px-3.5 py-2.5 rounded-full border transition-colors ${filter === 'signed' ? 'bg-[#16233F] text-white border-[#16233F]' : 'bg-white text-gray-500 border-[#EDEDF3]'}`}>Signés · {signed}</button>
-        <button onClick={() => setFilter('refused')} className={`text-[13px] font-semibold px-3.5 py-2.5 rounded-full border transition-colors ${filter === 'refused' ? 'bg-[#16233F] text-white border-[#16233F]' : 'bg-white text-gray-500 border-[#EDEDF3]'}`}>Refusés · {refused}</button>
+        <button onClick={() => setFilter('brouillon')} className={`text-[13px] font-semibold px-3.5 py-2.5 rounded-full border transition-colors ${filter === 'brouillon' ? 'bg-[#16233F] text-white border-[#16233F]' : 'bg-white text-gray-500 border-[#EDEDF3]'}`}>Brouillons · {brouillon}</button>
+        <button onClick={() => setFilter('envoye')} className={`text-[13px] font-semibold px-3.5 py-2.5 rounded-full border transition-colors ${filter === 'envoye' ? 'bg-[#16233F] text-white border-[#16233F]' : 'bg-white text-gray-500 border-[#EDEDF3]'}`}>Envoyés · {envoye}</button>
+        <button onClick={() => setFilter('signe')} className={`text-[13px] font-semibold px-3.5 py-2.5 rounded-full border transition-colors ${filter === 'signe' ? 'bg-[#16233F] text-white border-[#16233F]' : 'bg-white text-gray-500 border-[#EDEDF3]'}`}>Signés · {signe}</button>
       </div>
 
       <div className="bg-white border border-[#EDEDF3] rounded-[18px] overflow-hidden">
@@ -137,7 +153,7 @@ export default function QuotesClientPage({ initialQuotes }: { initialQuotes: Quo
           <thead>
             <tr className="border-b border-[#F1F2F6]">
               <th className="px-5 py-4 text-[11.5px] font-bold text-gray-400 uppercase tracking-wide">Client</th>
-              <th className="px-5 py-4 text-[11.5px] font-bold text-gray-400 uppercase tracking-wide">Montant</th>
+              <th className="px-5 py-4 text-[11.5px] font-bold text-gray-400 uppercase tracking-wide">Montant HT</th>
               <th className="px-5 py-4 text-[11.5px] font-bold text-gray-400 uppercase tracking-wide">Statut</th>
               <th className="px-5 py-4 text-[11.5px] font-bold text-gray-400 uppercase tracking-wide">Émission</th>
               <th className="px-5 py-4 text-[11.5px] font-bold text-gray-400 uppercase tracking-wide">Signature</th>
@@ -147,22 +163,26 @@ export default function QuotesClientPage({ initialQuotes }: { initialQuotes: Quo
           <tbody className="divide-y divide-[#F6F6FA]">
             {filteredQuotes.map((quote) => {
               const status = statusInfo(quote.status)
+              const name = clientName(quote)
               return (
                 <tr key={quote.id} onClick={() => router.push(`/dashboard/quotes/${quote.id}`)} className="cursor-pointer hover:bg-gray-50/60 transition-colors">
                   <td className="px-5 py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-[#EDEFFB] text-[#16233F] text-[13px] font-extrabold flex items-center justify-center shrink-0">
-                        {initials(quote.client_name)}
+                        {initials(name)}
                       </div>
-                      <span className="text-[14px] font-bold text-[#1E2430]">{quote.client_name || 'Nouveau prospect'}</span>
+                      <div>
+                        <span className="text-[14px] font-bold text-[#1E2430] block">{name || 'Client non renseigné'}</span>
+                        {quote.reference && <span className="text-[12px] text-gray-400">{quote.reference}</span>}
+                      </div>
                     </div>
                   </td>
-                  <td className="px-5 py-4 text-[14px] font-extrabold text-[#16233F]">{formatEuro(Number(quote.total_amount || 0))}</td>
+                  <td className="px-5 py-4 text-[14px] font-extrabold text-[#16233F]">{formatEuro(amountHt(quote))}</td>
                   <td className="px-5 py-4">
                     <span className="text-[12px] font-bold px-3 py-1 rounded-xl" style={{ background: status.bg, color: status.fg }}>{status.label}</span>
                   </td>
                   <td className="px-5 py-4 text-[14px] text-gray-500">{formatDate(quote.created_at)}</td>
-                  <td className="px-5 py-4 text-[14px] text-gray-500">{formatDate(quote.signed_at)}</td>
+                  <td className="px-5 py-4 text-[14px] text-gray-500">{formatDate(signedAt(quote))}</td>
                   <td className="px-5 py-4 text-right"><ChevronRight className="w-4 h-4 text-gray-400 inline-block" /></td>
                 </tr>
               )
