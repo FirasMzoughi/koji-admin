@@ -16,6 +16,8 @@ export type Utilisateur = {
   subscription_expires_at?: string | null
   trial_ends_at?: string | null
   business_info?: Record<string, unknown> | null
+  email_verified?: boolean | null
+  address?: string | null
 }
 
 export type Doc = { fileDataUrl?: string; expiryDate?: string; updatedDate?: string; valideLe?: string; refuseLe?: string; motif?: string; recuLe?: string }

@@ -34,6 +34,7 @@
 .bo-card{background:var(--card);border:1px solid var(--frame);border-top:2px solid var(--ink);border-radius:2px;padding:16px 18px}
 .bo-card h2{margin:0 0 10px;font-size:16px}
 .bo-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));background:var(--card);border:1px solid var(--frame);border-top:2px solid var(--ink)}
+.bo-kpis.quatre{grid-template-columns:repeat(4,minmax(0,1fr))}
 .bo-kpis>div{padding:14px 16px;border-left:1px solid var(--line);border-top:1px solid var(--line);display:flex;flex-direction:column;gap:2px}
 .bo-kpis span{font-size:12px;color:var(--grey)}
 .bo-kpis b{font-size:24px;font-weight:600}
@@ -72,5 +73,5 @@
 .bo-form input{height:36px;border:1px solid #D9D9D4;border-radius:2px;padding:0 10px;font:inherit}
 .bo-err{color:#B3261E;font-size:13px}
 .bo-ok{font-size:13px;border-left:3px solid var(--ink);padding:6px 10px;background:var(--card)}
-@media (max-width:1100px){.bo-g2,.bo-g2.fiche{grid-template-columns:1fr}.bo-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:640px){.bo-kpis{grid-template-columns:1fr}.bo-table{display:block;overflow-x:auto}}
+@media (max-width:1100px){.bo-g2,.bo-g2.fiche{grid-template-columns:1fr}.bo-kpis,.bo-kpis.quatre{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.bo-kpis,.bo-kpis.quatre{grid-template-columns:1fr}.bo-table{display:block;overflow-x:auto}}

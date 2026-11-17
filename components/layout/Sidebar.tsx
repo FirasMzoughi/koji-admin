@@ -27,10 +27,10 @@ const GROUPES: { label: string; univers?: 'pro' | 'client'; items: Item[] }[] = 
   {
     label: 'Koji Client · particuliers', univers: 'client',
     items: [
-      { label: 'Particuliers', href: '/dashboard/particuliers', bientot: true },
-      { label: 'Demandes', href: '/dashboard/demandes', bientot: true },
+      { label: 'Particuliers', href: '/dashboard/particuliers' },
+      { label: 'Demandes', href: '/dashboard/demandes' },
       { label: 'Conversations', href: '/dashboard/conversations' },
-      { label: 'Support Client', href: '/dashboard/support-client', bientot: true }
+      { label: 'Support Client', href: '/dashboard/support-client' }
     ]
   },
   { label: 'Partenaires', items: [{ label: 'Fournisseurs', href: '/dashboard/fournisseurs' }, { label: 'Produits', href: '/dashboard/products' }] },
